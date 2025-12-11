@@ -1,0 +1,15 @@
+
+根据 README 自动生成的 TODO 列表（初始状态：not-started）
+
+1. 读取并验证 `config/league.json` 中的赛事映射  - not-started
+2. 实现抓取联赛/杯赛页面 HTML（按赛事ID与赛季）  - not-started
+3. 从页面 HTML 解析 `SclassID`、`SubSclassID`、`selectSeason`、`selectRound`  - not-started
+4. 抓取并解析赛季比赛数据（`jsData/matchResult/.../s{ID}.js`）  - not-started
+5. 实现赔率接口抓取并解析 `oddsData`（欧赔/亚盘/大小球）  - not-started
+6. 实现杯赛赛季数据抓取（`jsData/matchResult/{season}/c{ID}.js` 与 `jsData/LeagueSeason/sea{ID}.js`）  - not-started
+7. 抓取并解析比赛最近 30 场信息（`https://bf.titan007.com/panlu/{matchId}cn.htm`）  - not-started
+8. 添加 CLI/脚本入口 `src/main.js` 来运行抓取流程并保存结果  - not-started
+9. 为解析逻辑添加单元测试或样例并验证输出格式  - not-started
+10. 更新 `README` 或 `doc/`，补充使用说明与示例  - not-started
+
+备注：每项任务可以进一步拆分为小步骤（实现、错误处理、测试、文档）。
