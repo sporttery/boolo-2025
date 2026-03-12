@@ -1,0 +1,48 @@
+{
+  "teamId": "67485",
+  "page": 1,
+  "totalPages": 1,
+  "items": [
+    {
+      "id": 2462787,
+      "leagueId": 90,
+      "leagueColor": "#0000cc",
+      "playtime": "2023/09/02 22:00",
+      "leagueName": "英足总杯",
+      "homeName": "克雷",
+      "homeId": 3294,
+      "awayName": "纽黑文",
+      "awayId": 67485,
+      "fullscore": "5-1",
+      "halfscore": "2-0",
+      "result": "负",
+      "raw": [
+        2462787,
+        90,
+        "#0000cc",
+        "2023/09/02 22:00",
+        3294,
+        67485,
+        "5-1",
+        "2-0",
+        "英足总杯",
+        "英足總盃",
+        "ENG FAC",
+        "克雷",
+        "克雷",
+        "Cray Wanderers",
+        "纽黑文",
+        "紐黑文",
+        "Newhaven",
+        0,
+        0,
+        "",
+        "",
+        "",
+        "",
+        "负",
+        1
+      ]
+    }
+  ]
+}

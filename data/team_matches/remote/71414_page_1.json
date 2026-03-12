@@ -1,0 +1,48 @@
+{
+  "teamId": "71414",
+  "page": 1,
+  "totalPages": 1,
+  "items": [
+    {
+      "id": 2654473,
+      "leagueId": 90,
+      "leagueColor": "#0000cc",
+      "playtime": "2024/08/31 22:00",
+      "leagueName": "英足总杯",
+      "homeName": "格兰特咸",
+      "homeId": 3756,
+      "awayName": "纽瓦克舍伍德",
+      "awayId": 71414,
+      "fullscore": "1-0",
+      "halfscore": "0-0",
+      "result": "负",
+      "raw": [
+        2654473,
+        90,
+        "#0000cc",
+        "2024/08/31 22:00",
+        3756,
+        71414,
+        "1-0",
+        "0-0",
+        "英足总杯",
+        "英足總盃",
+        "ENG FAC",
+        "格兰特咸",
+        "格蘭特咸",
+        "Grantham Town",
+        "纽瓦克舍伍德",
+        "紐瓦克捨伍德",
+        "Newark and Sherwood FC",
+        0,
+        0,
+        "",
+        "",
+        "",
+        "",
+        "负",
+        1
+      ]
+    }
+  ]
+}

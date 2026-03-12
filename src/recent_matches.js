@@ -36,6 +36,61 @@ class RecentMatches {
     return null;
   }
 
+  async fetchTeamPage(teamId, pageNo = 1){
+    const flesh = Math.random();
+    const url = `https://zq.titan007.com/cn/team/TeamScheAjax.aspx?TeamID=${teamId}&pageNo=${pageNo}&flesh=${flesh}`;
+    const txt = await this.fetchWithRetry(url, `https://zq.titan007.com/cn/team/${teamId}.html`).catch(()=>null);
+    if (!txt) return null;
+    try{
+      // extract teamPageInfo and teamPageData via vm
+      const sandbox = { teamPageInfo: null, teamPageData: null };
+      const ctx = vm.createContext(sandbox);
+      const wrapped = txt + '\n; (function(){ try{ return { teamPageInfo: typeof teamPageInfo!=="undefined"?teamPageInfo:null, teamPageData: typeof teamPageData!=="undefined"?teamPageData:null }; }catch(e){return null;} })();';
+      const script = new vm.Script(wrapped);
+      const res = script.runInContext(ctx, { timeout: 2000 });
+      return res;
+    }catch(e){
+      // fallback: try regex to extract arrays
+      const infoMatch = txt.match(/var\s+teamPageInfo\s*=\s*(\[[\s\S]*?\]);/);
+      const dataMatch = txt.match(/var\s+teamPageData\s*=\s*(\[[\s\S]*?\]);/);
+      try{
+        const teamPageInfo = infoMatch ? eval(infoMatch[1]) : null;
+        const teamPageData = dataMatch ? eval(dataMatch[1]) : null;
+        return { teamPageInfo, teamPageData };
+      }catch(e2){ return null; }
+    }
+  }
+
+  async fetchTeamMatches(teamId, maxPages = 50, stopOnResults = 30){
+    const outDir = path.resolve(__dirname, '../data/team_matches/remote');
+    await fs.mkdir(outDir, { recursive: true });
+    let page = 1; let totalPages = Infinity; let resultsCount = 0; const allMatches = [];
+    while(page <= totalPages && page <= maxPages){
+      const res = await this.fetchTeamPage(teamId, page);
+      if (!res) break;
+      const info = res.teamPageInfo || null;
+      const data = res.teamPageData || [];
+      if (Array.isArray(info) && typeof info[0] === 'number') totalPages = Number(info[0]);
+      const items = [];
+      for (const d of data){
+        // map as README
+        const playtime = d[3];
+        const match = {
+          id: d[0], leagueId: d[1], leagueColor: d[2], playtime,
+          leagueName: d[8], homeName: d[11], homeId: d[4], awayName: d[14], awayId: d[5], fullscore: d[6], halfscore: d[7], result: d[23], raw: d
+        };
+        items.push(match);
+        if (match.fullscore && String(match.fullscore).trim() !== '') resultsCount++;
+      }
+      const outPath = path.join(outDir, `${teamId}_page_${page}.json`);
+      await fs.writeFile(outPath, JSON.stringify({ teamId, page, totalPages: isFinite(totalPages)?totalPages:null, items }, null, 2), 'utf8');
+      allMatches.push(...items);
+      if (resultsCount >= stopOnResults) break;
+      page++;
+    }
+    return { teamId, fetchedPages: page-1, totalMatches: allMatches.length, resultsCount };
+  }
+
   parsePanluHtml(html){
     // extract <script> blocks and execute them in a sandbox where `a` is pre-created
     try{
@@ -114,6 +169,128 @@ class RecentMatches {
     return Array.from(ids);
   }
 
+  async collectTeamIdsFromRaw(){
+    // Prefer using existing teams.json if present
+    const teamsPath = path.resolve(__dirname, '../data/teams.json');
+    try{
+      const txt = await fs.readFile(teamsPath, 'utf8');
+      const j = JSON.parse(txt);
+      if (j && Array.isArray(j.teams) && j.teams.length){
+        return j.teams.map(t=>String(t.id));
+      }
+    }catch(e){ /* not present or invalid, fallback below */ }
+
+    // If teams.json missing, try to invoke export_teams.collectTeams()
+    try{
+      const exporter = require('./export_teams');
+      if (exporter && typeof exporter.collectTeams === 'function'){
+        const teams = await exporter.collectTeams();
+        if (Array.isArray(teams) && teams.length){
+          // persist teams.json for future runs
+          try{
+            const outDir = path.resolve(__dirname, '../data');
+            await fs.mkdir(outDir, { recursive: true });
+            const outPath = path.join(outDir, 'teams.json');
+            await fs.writeFile(outPath, JSON.stringify({ generatedAt: new Date().toISOString(), count: teams.length, teams }, null, 2), 'utf8');
+          }catch(e){}
+          return teams.map(t=>String(t.id));
+        }
+      }
+    }catch(e){ /* ignore */ }
+
+    // Fallback: scan raw files for arrTeam / jh entries
+    const RAW = path.resolve(__dirname, '../data/raw');
+    const ids = new Set();
+    let files = [];
+    try{ files = await fs.readdir(RAW); }catch(e){ return Array.from(ids); }
+    for (const f of files){
+      if (!/\.js$/.test(f)) continue;
+      try{
+        const txt = await fs.readFile(path.join(RAW, f), 'utf8');
+        // try to extract arrTeam if present
+        if (/var\s+arrTeam\s*=/.test(txt)){
+          try{
+            const sandbox = { arrTeam: null, jh: {} };
+            const ctx = vm.createContext(sandbox);
+            const script = new vm.Script(txt + '\n; (function(){ return typeof arrTeam!=="undefined"?arrTeam:null })();');
+            const arr = script.runInContext(ctx, { timeout: 2000 });
+            if (Array.isArray(arr)){
+              for (const t of arr){ if (Array.isArray(t) && t[0]) ids.add(String(t[0])); }
+            }
+          }catch(e){}
+        }
+        // also scan jh arrays for team ids
+        try{
+          const sandbox2 = { jh: {} };
+          const ctx2 = vm.createContext(sandbox2);
+          const script2 = new vm.Script(txt + '\n; (function(){ return typeof jh!=="undefined"?jh:null })();');
+          const parsed = script2.runInContext(ctx2, { timeout: 2000 });
+          if (parsed && typeof parsed === 'object'){
+            for (const k of Object.keys(parsed)){
+              const arr = parsed[k];
+              if (!Array.isArray(arr)) continue;
+              for (const item of arr){
+                if (Array.isArray(item)){
+                  const h = item[4]; const g = item[5];
+                  if (h) ids.add(String(h)); if (g) ids.add(String(g));
+                }
+              }
+            }
+          }
+        }catch(e){}
+      }catch(e){ }
+    }
+    return Array.from(ids);
+  }
+
+  async buildTeamMatches(teamId, pageSize = 20, stopOnResults = 30){
+    const RAW = path.resolve(__dirname, '../data/raw');
+    const outDir = path.resolve(__dirname, '../data/team_matches');
+    await fs.mkdir(outDir, { recursive: true });
+    const matches = [];
+    let files = [];
+    try{ files = await fs.readdir(RAW); }catch(e){ return 0; }
+    for (const f of files){
+      if (!/_match\.js$/.test(f)) continue;
+      try{
+        const txt = await fs.readFile(path.join(RAW, f), 'utf8');
+        const sandbox = { jh: {} };
+        const ctx = vm.createContext(sandbox);
+        const script = new vm.Script(txt + '\n; (function(){ return typeof jh!=="undefined"?jh:null })();');
+        const parsed = script.runInContext(ctx, { timeout: 2000 });
+        if (parsed && typeof parsed === 'object'){
+          for (const k of Object.keys(parsed)){
+            const arr = parsed[k];
+            if (!Array.isArray(arr)) continue;
+            for (const item of arr){
+              if (!Array.isArray(item)) continue;
+              const home = item[4]; const guest = item[5];
+              if (String(home) === String(teamId) || String(guest) === String(teamId)){
+                // map
+                matches.push({
+                  matchId: item[0], date: item[3], homeId: home, guestId: guest, score: item[6], raw: item
+                });
+              }
+            }
+          }
+        }
+      }catch(e){ }
+    }
+    // sort by date desc
+    matches.sort((a,b)=>{ const da = new Date(a.date||0); const db = new Date(b.date||0); return db - da; });
+    // paginate and persist
+    let resultsCount = 0;
+    const pages = Math.ceil(matches.length / pageSize) || 0;
+    for (let p=0;p<pages;p++){
+      const slice = matches.slice(p*pageSize, (p+1)*pageSize);
+      for (const m of slice){ if (m.score && String(m.score).trim() !== '') resultsCount++; }
+      const outPath = path.join(outDir, `${teamId}_page_${p+1}.json`);
+      await fs.writeFile(outPath, JSON.stringify({ teamId, page: p+1, pageSize, items: slice, resultsCount }, null, 2), 'utf8');
+      if (resultsCount >= stopOnResults) break;
+    }
+    return { teamId, pages: Math.ceil(matches.length/pageSize), totalMatches: matches.length, resultsCount };
+  }
+
   async getAllRecentAndSave(opts = {}){
     const outDir = path.resolve(__dirname, '../data/recent');
     await fs.mkdir(outDir, { recursive: true });
@@ -168,6 +345,67 @@ if (require.main === module){
   (async ()=>{
     const args = process.argv.slice(2);
     const r = new RecentMatches();
+    if (args.length >= 1 && args[0] === 'teams'){
+      const pageSize = args[1] ? Number(args[1]) : 20;
+      const maxTeams = args[2] ? Number(args[2]) : 0; // 0 => all
+      console.log('Collecting team IDs from local raw files...');
+      const teamIds = await r.collectTeamIdsFromRaw();
+      console.log('found team ids:', teamIds.length);
+      const toProcess = maxTeams > 0 ? teamIds.slice(0, maxTeams) : teamIds;
+      for (const tid of toProcess){
+        try{
+          const info = await r.buildTeamMatches(tid, pageSize, 30);
+          console.log('team', tid, 'pages', info.pages, 'total', info.totalMatches, 'resultsCount', info.resultsCount);
+        }catch(e){ console.error('team error', tid, e.message); }
+      }
+      return;
+    }
+
+    if (args.length >= 2 && args[0] === 'teamfetch'){
+      const teamId = args[1];
+      const maxPages = args[2] ? Number(args[2]) : 50;
+      console.log('fetching team pages remote for', teamId, 'maxPages=', maxPages);
+      const info = await r.fetchTeamMatches(teamId, maxPages, 30);
+      console.log('done', info);
+      return;
+    }
+
+    if (args.length >= 1 && args[0] === 'teamfetch-all'){
+      const maxPages = args[1] ? Number(args[1]) : 50;
+      const batchSize = args[2] ? Number(args[2]) : 5; // concurrent teams per batch
+      const maxTeams = args[3] ? Number(args[3]) : 0; // 0 => all
+      console.log('teamfetch-all: maxPages=', maxPages, 'batchSize=', batchSize, 'maxTeams=', maxTeams || 'ALL');
+      const teamIds = await r.collectTeamIdsFromRaw();
+      console.log('total team ids found:', teamIds.length);
+      const toProcess = maxTeams > 0 ? teamIds.slice(0, maxTeams) : teamIds;
+      const outDirRemote = path.resolve(__dirname, '../data/team_matches/remote');
+      await fs.mkdir(outDirRemote, { recursive: true });
+      for (let i=0;i<toProcess.length;i+=batchSize){
+        const batch = toProcess.slice(i, i+batchSize);
+        console.log('processing batch', Math.floor(i/batchSize)+1, 'size', batch.length);
+        // process sequentially within batch to avoid too many concurrent network calls
+        for (const tid of batch){
+          // skip if first page already exists (assume already fetched)
+          try{
+            const firstPagePath = path.join(outDirRemote, `${tid}_page_1.json`);
+            await fs.access(firstPagePath);
+            console.log('skip', tid, '-> already has', firstPagePath);
+            continue;
+          }catch(e){ /* not exists, proceed */ }
+          try{
+            const info = await r.fetchTeamMatches(tid, maxPages, 30);
+            console.log('team', tid, 'fetchedPages', info.fetchedPages, 'matches', info.totalMatches, 'results', info.resultsCount);
+          }catch(e){ console.error('teamfetch error', tid, e.message); }
+          // small delay between teams
+          await r.delay(300 + Math.floor(Math.random()*700));
+        }
+        // delay between batches
+        await r.delay(1500 + Math.floor(Math.random()*2000));
+      }
+      console.log('teamfetch-all completed');
+      return;
+    }
+
     if (args.length >= 2 && /^\d+$/.test(args[0])){
       // treat as leagueId season [max]
       const leagueId = args[0];

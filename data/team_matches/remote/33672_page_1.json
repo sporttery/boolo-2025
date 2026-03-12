@@ -1,0 +1,48 @@
+{
+  "teamId": "33672",
+  "page": 1,
+  "totalPages": 1,
+  "items": [
+    {
+      "id": 2858686,
+      "leagueId": 90,
+      "leagueColor": "#0000cc",
+      "playtime": "2025/08/31 22:00",
+      "leagueName": "英足总杯",
+      "homeName": "沃金厄姆镇",
+      "homeId": 33672,
+      "awayName": "布格斯",
+      "awayId": 3901,
+      "fullscore": "1-5",
+      "halfscore": "0-4",
+      "result": "负",
+      "raw": [
+        2858686,
+        90,
+        "#0000cc",
+        "2025/08/31 22:00",
+        33672,
+        3901,
+        "1-5",
+        "0-4",
+        "英足总杯",
+        "英足總盃",
+        "ENG FAC",
+        "沃金厄姆镇",
+        "沃金厄姆鎮",
+        "Wokingham Town",
+        "布格斯",
+        "布格斯",
+        "Burgess Hill Town",
+        0,
+        0,
+        "",
+        "",
+        "",
+        "",
+        "负",
+        1
+      ]
+    }
+  ]
+}

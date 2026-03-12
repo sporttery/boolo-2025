@@ -1,0 +1,48 @@
+{
+  "teamId": "25860",
+  "page": 2,
+  "totalPages": 2,
+  "items": [
+    {
+      "id": 1191126,
+      "leagueId": 90,
+      "leagueColor": "#0000cc",
+      "playtime": "2015/09/26 22:00",
+      "leagueName": "英足总杯",
+      "homeName": "格雷斯竞技",
+      "homeId": 1864,
+      "awayName": "侯桥竞技",
+      "awayId": 25860,
+      "fullscore": "6-0",
+      "halfscore": "0-0",
+      "result": "负",
+      "raw": [
+        1191126,
+        90,
+        "#0000cc",
+        "2015/09/26 22:00",
+        1864,
+        25860,
+        "6-0",
+        "0-0",
+        "英足总杯",
+        "英足總盃",
+        "ENG FAC",
+        "格雷斯竞技",
+        "格雷斯",
+        "Grays Athletic",
+        "侯桥竞技",
+        "侯橋競技",
+        "Hullbridge Sports",
+        0,
+        0,
+        "",
+        "",
+        "",
+        "",
+        "负",
+        1
+      ]
+    }
+  ]
+}

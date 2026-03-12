@@ -1,0 +1,48 @@
+{
+  "teamId": "71413",
+  "page": 1,
+  "totalPages": 1,
+  "items": [
+    {
+      "id": 2654425,
+      "leagueId": 90,
+      "leagueColor": "#0000cc",
+      "playtime": "2024/09/01 21:00",
+      "leagueName": "英足总杯",
+      "homeName": "雅茅斯城",
+      "homeId": 71413,
+      "awayName": "柴斯罕特",
+      "awayId": 1854,
+      "fullscore": "1-2",
+      "halfscore": "0-0",
+      "result": "负",
+      "raw": [
+        2654425,
+        90,
+        "#0000cc",
+        "2024/09/01 21:00",
+        71413,
+        1854,
+        "1-2",
+        "0-0",
+        "英足总杯",
+        "英足總盃",
+        "ENG FAC",
+        "雅茅斯城",
+        "雅茅斯城",
+        "Great Yarmouth Town",
+        "柴斯罕特",
+        "柴順特",
+        "Cheshunt",
+        0,
+        0,
+        "",
+        "",
+        "",
+        "",
+        "负",
+        1
+      ]
+    }
+  ]
+}

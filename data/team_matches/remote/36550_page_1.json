@@ -1,0 +1,48 @@
+{
+  "teamId": "36550",
+  "page": 1,
+  "totalPages": 1,
+  "items": [
+    {
+      "id": 2462776,
+      "leagueId": 90,
+      "leagueColor": "#0000cc",
+      "playtime": "2023/09/02 22:00",
+      "leagueName": "英足总杯",
+      "homeName": "布赖特灵西",
+      "homeId": 30979,
+      "awayName": "索布里奇沃思镇",
+      "awayId": 36550,
+      "fullscore": "2-0",
+      "halfscore": "1-0",
+      "result": "负",
+      "raw": [
+        2462776,
+        90,
+        "#0000cc",
+        "2023/09/02 22:00",
+        30979,
+        36550,
+        "2-0",
+        "1-0",
+        "英足总杯",
+        "英足總盃",
+        "ENG FAC",
+        "布赖特灵西",
+        "布賴特靈西",
+        "Brightlingsea Regent",
+        "索布里奇沃思镇",
+        "索布里奇沃思鎮",
+        "Sawbridgeworth Town",
+        0,
+        0,
+        "",
+        "",
+        "",
+        "",
+        "负",
+        1
+      ]
+    }
+  ]
+}

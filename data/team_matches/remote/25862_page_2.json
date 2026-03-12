@@ -1,0 +1,48 @@
+{
+  "teamId": "25862",
+  "page": 2,
+  "totalPages": 2,
+  "items": [
+    {
+      "id": 1191143,
+      "leagueId": 90,
+      "leagueColor": "#0000cc",
+      "playtime": "2015/09/26 22:00",
+      "leagueName": "英足总杯",
+      "homeName": "恩菲尔德镇",
+      "homeId": 3765,
+      "awayName": "叶士域治流浪人",
+      "awayId": 25862,
+      "fullscore": "1-0",
+      "halfscore": "0-0",
+      "result": "负",
+      "raw": [
+        1191143,
+        90,
+        "#0000cc",
+        "2015/09/26 22:00",
+        3765,
+        25862,
+        "1-0",
+        "0-0",
+        "英足总杯",
+        "英足總盃",
+        "ENG FAC",
+        "恩菲尔德镇",
+        "恩菲爾德鎮",
+        "Enfield Town",
+        "叶士域治流浪人",
+        "葉士域治流浪人",
+        "Ipswich Wanderers",
+        0,
+        0,
+        "",
+        "",
+        "",
+        "",
+        "负",
+        1
+      ]
+    }
+  ]
+}

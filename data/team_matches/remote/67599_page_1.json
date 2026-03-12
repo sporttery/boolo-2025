@@ -1,0 +1,48 @@
+{
+  "teamId": "67599",
+  "page": 1,
+  "totalPages": 1,
+  "items": [
+    {
+      "id": 2468505,
+      "leagueId": 90,
+      "leagueColor": "#0000cc",
+      "playtime": "2023/09/02 22:00",
+      "leagueName": "英足总杯",
+      "homeName": "奥克汉普顿阿盖尔",
+      "homeId": 67599,
+      "awayName": "海沃思镇",
+      "awayId": 15665,
+      "fullscore": "1-3",
+      "halfscore": "0-1",
+      "result": "负",
+      "raw": [
+        2468505,
+        90,
+        "#0000cc",
+        "2023/09/02 22:00",
+        67599,
+        15665,
+        "1-3",
+        "0-1",
+        "英足总杯",
+        "英足總盃",
+        "ENG FAC",
+        "奥克汉普顿阿盖尔",
+        "奧克漢普頓阿蓋爾",
+        "Okehampton Argyle",
+        "海沃思镇",
+        "海沃思鎮",
+        "Highworth Town",
+        0,
+        0,
+        "",
+        "",
+        "",
+        "",
+        "负",
+        1
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "teamId": "12016",
+  "page": 2,
+  "totalPages": 2,
+  "items": [
+    {
+      "id": 345027,
+      "leagueId": 177,
+      "leagueColor": "#CC6600",
+      "playtime": "2009/10/17 22:00",
+      "leagueName": "英挑杯",
+      "homeName": "斯科梅达",
+      "homeId": 9143,
+      "awayName": "高雷",
+      "awayId": 12016,
+      "fullscore": "5-0",
+      "halfscore": "2-0",
+      "result": "负",
+      "raw": [
+        345027,
+        177,
+        "#CC6600",
+        "2009/10/17 22:00",
+        9143,
+        12016,
+        "5-0",
+        "2-0",
+        "英挑杯",
+        "英挑盃",
+        "ENG FAT",
+        "斯科梅达",
+        "斯科梅達",
+        "Skelmersdale United",
+        "高雷",
+        "高雷",
+        "Goole",
+        0,
+        0,
+        "",
+        "",
+        "",
+        "",
+        "负",
+        1
+      ]
+    }
+  ]
+}

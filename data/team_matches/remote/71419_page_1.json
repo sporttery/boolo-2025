@@ -1,0 +1,48 @@
+{
+  "teamId": "71419",
+  "page": 1,
+  "totalPages": 1,
+  "items": [
+    {
+      "id": 2654481,
+      "leagueId": 90,
+      "leagueColor": "#0000cc",
+      "playtime": "2024/08/31 22:00",
+      "leagueName": "英足总杯",
+      "homeName": "戈斯波特",
+      "homeId": 11862,
+      "awayName": "安多佛新街",
+      "awayId": 71419,
+      "fullscore": "4-0",
+      "halfscore": "4-0",
+      "result": "负",
+      "raw": [
+        2654481,
+        90,
+        "#0000cc",
+        "2024/08/31 22:00",
+        11862,
+        71419,
+        "4-0",
+        "4-0",
+        "英足总杯",
+        "英足總盃",
+        "ENG FAC",
+        "戈斯波特",
+        "戈斯波特",
+        "Gosport Borough",
+        "安多佛新街",
+        "安多佛新街",
+        "Andover New Street",
+        0,
+        0,
+        "",
+        "",
+        "",
+        "",
+        "负",
+        1
+      ]
+    }
+  ]
+}

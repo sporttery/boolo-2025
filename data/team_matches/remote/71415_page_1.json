@@ -1,0 +1,48 @@
+{
+  "teamId": "71415",
+  "page": 1,
+  "totalPages": 1,
+  "items": [
+    {
+      "id": 2654474,
+      "leagueId": 90,
+      "leagueColor": "#0000cc",
+      "playtime": "2024/08/31 22:00",
+      "leagueName": "英足总杯",
+      "homeName": "比夏史托福",
+      "homeId": 1855,
+      "awayName": "康纳德联队",
+      "awayId": 71415,
+      "fullscore": "5-0",
+      "halfscore": "2-0",
+      "result": "负",
+      "raw": [
+        2654474,
+        90,
+        "#0000cc",
+        "2024/08/31 22:00",
+        1855,
+        71415,
+        "5-0",
+        "2-0",
+        "英足总杯",
+        "英足總盃",
+        "ENG FAC",
+        "比夏史托福",
+        "比夏史托福",
+        "Bishop's Stortford",
+        "康纳德联队",
+        "康納德聯隊",
+        "Cornard United",
+        0,
+        0,
+        "",
+        "",
+        "",
+        "",
+        "负",
+        1
+      ]
+    }
+  ]
+}
